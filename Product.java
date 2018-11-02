@@ -5,7 +5,7 @@
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class Produkt
+public class Product
 {
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
     private int id;
@@ -19,7 +19,7 @@ public class Produkt
     /**
      * Konstruktor für Objekte der Klasse Produkt
      */
-    public Produkt(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize)
+    public Product(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize)
     {
         id = pId;
         type = pType;

@@ -5,17 +5,17 @@ import java.util.Date;
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class Bestellung
+public class Order
 {
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
     private int id;
-    private Produkt[] products;
+    private Product[] products;
     private Account account;
     private Date date;
     private String status;
     
 
-    public Bestellung(int id, Produkt[] products, Account account, Date date, String status)
+    public Order(int id, Product[] products, Account account, Date date, String status)
     {
         this.id = id;
         this.products = products;
@@ -28,7 +28,7 @@ public class Bestellung
         return id;
     }
     
-    public Produkt[] getProducts(){
+    public Product[] getProducts(){
         return products;
     }
     

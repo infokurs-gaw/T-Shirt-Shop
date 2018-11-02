@@ -12,12 +12,12 @@ public class Account {
     private String address;
     private String email;
     private String creditCard;
-    private Produkt lastViewedProduct;
+    private Product lastViewedProduct;
 
     /**
      * Konstruktor für Objekte der Klasse Account
      */
-    public Account(int id, String name, String address, String email, String creditCard, Produkt lastViewedProduct) {
+    public Account(int id, String name, String address, String email, String creditCard, Product lastViewedProduct) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -46,7 +46,7 @@ public class Account {
         return creditCard;
     }
 
-    public Produkt getLastViewedProduct(){
+    public Product getLastViewedProduct(){
         return lastViewedProduct;
     }
 }
