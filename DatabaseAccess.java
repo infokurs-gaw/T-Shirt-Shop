@@ -135,5 +135,22 @@ public class DatabaseAccess
             return null;
         }
 
+
+    public void getAccount(String user, String password)
+    {
+        // tragen Sie hier den Code ein
+
+        DatabaseConnector dbConnector = new DatabaseConnector("",0,"DatabaseAccess.db","","");
+        dbConnector.executeStatement("select * from accounts where email = '" + user + "'AND password = '" + password + "';");
+        QueryResult res = dbConnector.getCurrentQueryResult();
+        if (res != null) {
+            for (int i = 0; i < res.getRowCount(); i++) {
+                System.out.println(res.getData()[i][0]);
+            }
+        } 
+        else {
+            System.out.println(dbConnector.getErrorMessage());
+        }
+        dbConnector.close();
     }
 }
