@@ -24,6 +24,19 @@ public class DatabaseAccess
         DatabaseAccess d = new DatabaseAccess();
         d.getProducts();
     }
+    
+    private String extractField(String fieldName, String[] colNames, String[] row){
+        int index = -1;
+        for(int i = 0; i < row.length; i++){
+             if(colNames[i].equals(fieldName)){
+                 index = i;
+                 break;
+             }
+        }
+        
+        return row[index];
+        
+    }
 
     public Product[] getProducts(){
         this.dbConnector.executeStatement("SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id;");
@@ -36,37 +49,15 @@ public class DatabaseAccess
             
             for (int i = 0; i < res.getRowCount(); i++) {
                 
-                int id = -1;
-                double price = 0;
-                String name = "", color = "", size = "", type = "", description = "";
-
-                for(int j = 0; j < res.getData()[i].length; j++){
-                    String data = res.getData()[i][j];
-                    switch (cols[j]){
-                        case "id":
-                           id = Integer.parseInt(data);
-                           break;
-                        case "name":
-                            name = data;
-                            break;
-                        case "color":
-                            color = data;
-                            break;
-                        case "size":
-                            size = data;
-                            break;
-                        case "type":
-                            type = data;
-                            break;
-                        case "description":
-                            description = data;
-                            break;
-                        case "price":
-                            price = Double.parseDouble(data);
-                            break;
-                    }
-                        
-                }
+                String[] row = res.getData()[i];
+                
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                double price = Double.parseDouble(this.extractField("price", cols, row));
+                String name = this.extractField("name", cols, row), 
+                       color = this.extractField("color", cols, row), 
+                       size = this.extractField("size", cols, row), 
+                       type = this.extractField("type", cols, row), 
+                       description = this.extractField("description", cols, row);
 
                 prods[i] = new Product(id, type, name, description, price, color, size);
 
