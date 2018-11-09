@@ -22,6 +22,7 @@ public class ShopServer extends Server {
             if(nachrichtTeil [1] .equals("ja")) {  
                 send (pClientIP, pClientPort, "Vielen Dank für Ihre Bestellung."); 
                 closeConnection(pClientIP, pClientPort);  
+                //Basket Methode purchase ausfuehren
             }
             else if (nachrichtTeil[1].equals("nein")) {
                 closeConnection(pClientIP, pClientPort);  

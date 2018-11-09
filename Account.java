@@ -13,6 +13,8 @@ public class Account {
     private String email;
     private String creditCard;
     private Product lastViewedProduct;
+    
+    
 
     /**
      * Konstruktor für Objekte der Klasse Account
@@ -49,4 +51,7 @@ public class Account {
     public Product getLastViewedProduct(){
         return lastViewedProduct;
     }
+    
+    
+    
 }

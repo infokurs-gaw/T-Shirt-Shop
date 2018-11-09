@@ -4,7 +4,7 @@ public class Basket
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
     
     ArrayList<Product> basket = new ArrayList<>();
-    public String[] arraylocal;
+   
     double totalprice = 0;// Gesamtpreis 
     
     String benutzer;// Benutzernahme
@@ -81,19 +81,12 @@ public class Basket
     {
         return totalprice;
     }
-    public void basketSaven()
+    
+    
+    public void purchase(Order x)
     {
-     
-     this.arraylokal = basket;
-    
-    
-    
-    
-    }
-    
-    public void purchase()
-    {
-    
+        
+        x.orderList = basket;
     }
 }
 

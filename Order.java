@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.*;
 /**
  * Beschreiben Sie hier die Klasse Bestellung.
  * 
@@ -13,7 +14,7 @@ public class Order
     private Account account;
     private Date date;
     private String status;
-    
+    ArrayList<Product> orderList = new ArrayList<>();//Obejekt beeinhaltet Liste von bestellten Produkten und den zugehoerigen Account
 
     public Order(int id, Product[] products, Account account, Date date, String status)
     {
