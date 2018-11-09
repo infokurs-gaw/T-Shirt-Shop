@@ -29,10 +29,10 @@ public class DatabaseAccess
     {
         // tragen Sie hier den Code ein
 
-        DatabaseConnector dbConnector = new DatabaseConnector("",0,"DatabaseAccess.db","","");
-        dbConnector.executeStatement("select * from accounts where email = '" + user + "'AND password = '" + password + "';");
+        DatabaseConnector dbConnector = new DatabaseConnector("",0,"datenbank.db","","");
+        dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = '" + password + "';");
         QueryResult res = dbConnector.getCurrentQueryResult();
-        if (res != null) {
+        if (res != null) {            
             for (int i = 0; i < res.getRowCount(); i++) {
                 System.out.println(res.getData()[i][0]);
             }
