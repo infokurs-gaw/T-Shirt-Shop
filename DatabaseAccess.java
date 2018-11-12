@@ -39,6 +39,10 @@ public class DatabaseAccess
 
     }
 
+    public DatabaseConnector getConnector(){
+        return this.dbConnector;
+    }
+
     public Product getProductById(int pId){
         this.dbConnector.executeStatement("SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id WHERE s.id = " + pId + " LIMIT 1;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
