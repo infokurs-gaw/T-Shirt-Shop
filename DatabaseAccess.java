@@ -134,23 +134,30 @@ public class DatabaseAccess
 
             return null;
         }
+    }
 
-
-    public void getAccount(String user, String password)
+    public Account getAccount(String user, String password)
     {
-        // tragen Sie hier den Code ein
-
-        DatabaseConnector dbConnector = new DatabaseConnector("",0,"datenbank.db","","");
-        dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = '" + password + "';");
-        QueryResult res = dbConnector.getCurrentQueryResult();
+        this.dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = MD5('" + password + "');");
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
         if (res != null) {            
-            for (int i = 0; i < res.getRowCount(); i++) {
-                System.out.println(res.getData()[i][0]);
+            String[] cols = res.getColumnNames();
+            if(res.getRowCount() > 0){
+                String[] row = res.getData()[0];
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                String name = this.extractField("name", cols, row);
+                String address = this.extractField("address", cols, row);
+                String email = this.extractField("email", cols, row);
+                String creditCard = this.extractField("credit_card", cols, row);
+                // TODO getLastViewProduct
+                return new Account(id, name, address, email, creditCard, null);
+            }else{
+                return null;
             }
         } 
         else {
-            System.out.println(dbConnector.getErrorMessage());
+            System.out.println(this.dbConnector.getErrorMessage());
+            return null;
         }
-        dbConnector.close();
     }
 }
