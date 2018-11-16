@@ -1,4 +1,4 @@
-
+import java.util.Date;
 /**
  * Beschreiben Sie hier die Klasse DatabaseAccess.
  * 
@@ -37,6 +37,44 @@ public class DatabaseAccess
 
         return row[index];
 
+    }
+    
+    public void logLogin(Account a){
+        this.dbConnector.executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGIN');");
+    }
+    
+    public void logLogout(Account a){
+        this.dbConnector.executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGOUT');");
+    }
+    
+    public Date[] getLoginDates(Account a){
+        this.dbConnector.executeStatement("SELECT * from event_log el WHERE event = 'LOGIN' AND account_id = " + a.getId());
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+
+        if (res != null) {
+            String[] cols = res.getColumnNames();
+
+            Date[] dates = new Date[res.getRowCount()];
+
+            for (int i = 0; i < res.getRowCount(); i++) {
+
+                String[] row = res.getData()[i];
+
+                String timestamp = Integer.parseInt(this.extractField("timestamp", cols, row));
+                dates[i] = new Date(timestamp);
+            }
+
+            return dates;
+        } 
+        else {
+            System.out.println(dbConnector.getErrorMessage());
+
+            return null;
+        }
+    }
+    
+    public Date[] getLogoutDates(Account a){
+        return null;
     }
 
     public DatabaseConnector getConnector(){
