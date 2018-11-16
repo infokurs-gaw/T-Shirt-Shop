@@ -76,6 +76,7 @@ public class DatabaseAccess
         }
 
     }
+
     public int getAvailableAmountForProductInStock(Product p){
         this.dbConnector.executeStatement("SELECT s.id, amount FROM stock s WHERE s.id = " + p.getId() + " LIMIT 1;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
@@ -160,5 +161,19 @@ public class DatabaseAccess
             return null;
         }
 
+    }
+
+    public boolean  addAccount(String user, String password,String address, String email, String creditcard, Account newAccount)
+    {
+        this.dbConnector.executeStatement("insert into accounts(name, address, ) values ('" +user+ "','" +address+"','"+email+"',MD5('"+password+"'),'" +creditcard+ "');");
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+        if (res != null) {
+            return true;
+        }
+        else{ 
+            return false;
+        }
+
+        
     }
 }
