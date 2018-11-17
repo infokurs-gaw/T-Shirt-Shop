@@ -1,5 +1,9 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
  * Beschreiben Sie hier die Klasse DatabaseAccess.
@@ -19,10 +23,44 @@ public class DatabaseAccess {
         // Instanzvariable initialisi eren
         // https://bitbucket.org/xerial/sqlite-jdbc/downloads/ Driver must be
         // installed!!!
-        this.dbConnector = new DatabaseConnector("", 0, "datenbank.db", "", "");
+        this.init();
+    }
+
+    public void init() {
+        try {
+
+            String dbName = "datenbank2.db";
+            Path dbPath = Paths.get(dbName);
+
+            if (!Files.exists(dbPath)) {
+                this.dbConnector = new DatabaseConnector("", 0, dbName, "", "");
+                String sql = new String(Files.readAllBytes(Paths.get("create-queries.sql")));
+                String[] queries = sql.split(";");
+
+                for (int i = 0; i < queries.length; i++) {
+                    this.dbConnector.executeStatement(queries[i]);
+                }
+
+                System.out.println("SQLite Database " + dbName
+                        + " should now be successfully initialized and populated. Continuing...");
+
+            } else {
+                System.out.println("Skipping init... db file already exists.");
+                this.dbConnector = new DatabaseConnector("", 0, dbName, "", "");
+
+                String m = this.dbConnector.getErrorMessage();
+
+                System.out.println(m);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public static void main() {
+        DatabaseAccess d = new DatabaseAccess();
+        d.getProducts();
     }
 
     private String extractField(String fieldName, String[] colNames, String[] row) {
