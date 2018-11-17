@@ -139,7 +139,7 @@ public class DatabaseAccess
 
     public Account getAccount(String user, String password)
     {
-        this.dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = MD5('" + password + "');");
+        this.dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = '" + password + "';");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
         if (res != null) {            
             String[] cols = res.getColumnNames();
@@ -163,9 +163,9 @@ public class DatabaseAccess
 
     }
 
-    public boolean  addAccount(String user, String password,String address, String email, String creditcard, Account newAccount)
+    public boolean  addAccount(String name, String password,String address, String email, String creditcard, Account newAccount)
     {
-        this.dbConnector.executeStatement("insert into accounts(name, address, ) values ('" +user+ "','" +address+"','"+email+"',MD5('"+password+"'),'" +creditcard+ "');");
+        this.dbConnector.executeStatement("insert into accounts(name, address, email, password, credit_card ) values ('" +name+ "','" +address+"','"+email+"','"+password+"','" +creditcard+ "');");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
         if (res != null) {
             return true;
