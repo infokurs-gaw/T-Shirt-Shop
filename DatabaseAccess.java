@@ -1,35 +1,34 @@
 import java.util.Date;
+import java.text.SimpleDateFormat;
+
 /**
  * Beschreiben Sie hier die Klasse DatabaseAccess.
  * 
- * @author (Ihr Name) 
+ * @author (Ihr Name)
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class DatabaseAccess
-{
+public class DatabaseAccess {
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
     private DatabaseConnector dbConnector;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     /**
      * Konstruktor für Objekte der Klasse DatabaseAccess
      */
-    public DatabaseAccess()
-    {
-        // Instanzvariable initialisi   eren
-        //https://bitbucket.org/xerial/sqlite-jdbc/downloads/ Driver must be installed!!!
+    public DatabaseAccess() {
+        // Instanzvariable initialisi eren
+        // https://bitbucket.org/xerial/sqlite-jdbc/downloads/ Driver must be
+        // installed!!!
         this.dbConnector = new DatabaseConnector("", 0, "datenbank.db", "", "");
     }
 
-    public static void main(){
-        DatabaseAccess d = new DatabaseAccess();
-        Product p = d.getProductById(1);
-        System.out.println(d.getAvailableAmountForProductInStock(p));
+    public static void main() {
     }
 
-    private String extractField(String fieldName, String[] colNames, String[] row){
+    private String extractField(String fieldName, String[] colNames, String[] row) {
         int index = -1;
-        for(int i = 0; i < row.length; i++){
-            if(colNames[i].equals(fieldName)){
+        for (int i = 0; i < row.length; i++) {
+            if (colNames[i].equals(fieldName)) {
                 index = i;
                 break;
             }
@@ -38,17 +37,20 @@ public class DatabaseAccess
         return row[index];
 
     }
-    
-    public void logLogin(Account a){
-        this.dbConnector.executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGIN');");
+
+    public void logLogin(Account a) {
+        this.dbConnector
+                .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGIN');");
     }
-    
-    public void logLogout(Account a){
-        this.dbConnector.executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGOUT');");
+
+    public void logLogout(Account a) {
+        this.dbConnector
+                .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGOUT');");
     }
-    
-    public Date[] getLoginDates(Account a){
-        this.dbConnector.executeStatement("SELECT * from event_log el WHERE event = 'LOGIN' AND account_id = " + a.getId());
+
+    public Date[] getLoginDates(Account a) {
+        this.dbConnector
+                .executeStatement("SELECT * from event_log el WHERE event = 'LOGIN' AND account_id = " + a.getId());
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -60,29 +62,60 @@ public class DatabaseAccess
 
                 String[] row = res.getData()[i];
 
-                String timestamp = Integer.parseInt(this.extractField("timestamp", cols, row));
-                dates[i] = new Date(timestamp);
+                String timestamp = this.extractField("timestamp", cols, row);
+                try {
+                    dates[i] = this.df.parse(timestamp);
+                } catch (Exception e) {
+                    dates[i] = null;
+                }
             }
 
             return dates;
-        } 
-        else {
+        } else {
             System.out.println(dbConnector.getErrorMessage());
 
             return null;
         }
     }
-    
-    public Date[] getLogoutDates(Account a){
-        return null;
+
+    public Date[] getLogoutDates(Account a) {
+        this.dbConnector
+                .executeStatement("SELECT * from event_log el WHERE event = 'LOGOUT' AND account_id = " + a.getId());
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+
+        if (res != null) {
+            String[] cols = res.getColumnNames();
+
+            Date[] dates = new Date[res.getRowCount()];
+
+            for (int i = 0; i < res.getRowCount(); i++) {
+
+                String[] row = res.getData()[i];
+
+                String timestamp = this.extractField("timestamp", cols, row);
+                try {
+                    dates[i] = this.df.parse(timestamp);
+                } catch (Exception e) {
+                    dates[i] = null;
+                }
+            }
+
+            return dates;
+        } else {
+            System.out.println(dbConnector.getErrorMessage());
+
+            return null;
+        }
     }
 
-    public DatabaseConnector getConnector(){
+    public DatabaseConnector getConnector() {
         return this.dbConnector;
     }
 
-    public Product getProductById(int pId){
-        this.dbConnector.executeStatement("SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id WHERE s.id = " + pId + " LIMIT 1;");
+    public Product getProductById(int pId) {
+        this.dbConnector.executeStatement(
+                "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id WHERE s.id = "
+                        + pId + " LIMIT 1;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -90,31 +123,29 @@ public class DatabaseAccess
 
             Product[] prod = new Product[res.getRowCount()];
 
-            if(res.getRowCount() > 0){
+            if (res.getRowCount() > 0) {
                 String[] row = res.getData()[0];
 
                 int id = Integer.parseInt(this.extractField("id", cols, row));
                 double price = Double.parseDouble(this.extractField("price", cols, row));
-                String name = this.extractField("name", cols, row), 
-                color = this.extractField("color", cols, row), 
-                size = this.extractField("size", cols, row), 
-                type = this.extractField("type", cols, row), 
-                description = this.extractField("description", cols, row);
+                String name = this.extractField("name", cols, row), color = this.extractField("color", cols, row),
+                        size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
+                        description = this.extractField("description", cols, row);
 
                 return new Product(id, type, name, description, price, color, size);
-            }else{
+            } else {
                 return null;
             }
 
-        } 
-        else {
+        } else {
             System.out.println(dbConnector.getErrorMessage());
 
             return null;
         }
 
     }
-    public int getAvailableAmountForProductInStock(Product p){
+
+    public int getAvailableAmountForProductInStock(Product p) {
         this.dbConnector.executeStatement("SELECT s.id, amount FROM stock s WHERE s.id = " + p.getId() + " LIMIT 1;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
@@ -123,25 +154,25 @@ public class DatabaseAccess
 
             Product[] prod = new Product[res.getRowCount()];
 
-            if(res.getRowCount() > 0){
+            if (res.getRowCount() > 0) {
                 String[] row = res.getData()[0];
                 int amount = Integer.parseInt(this.extractField("amount", cols, row));
 
                 return amount;
-            }else{
+            } else {
                 return -1;
             }
 
-        } 
-        else {
+        } else {
             System.out.println(dbConnector.getErrorMessage());
 
             return -1;
         }
     }
 
-    public Product[] getProducts(){
-        this.dbConnector.executeStatement("SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id;");
+    public Product[] getProducts() {
+        this.dbConnector.executeStatement(
+                "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -155,19 +186,16 @@ public class DatabaseAccess
 
                 int id = Integer.parseInt(this.extractField("id", cols, row));
                 double price = Double.parseDouble(this.extractField("price", cols, row));
-                String name = this.extractField("name", cols, row), 
-                color = this.extractField("color", cols, row), 
-                size = this.extractField("size", cols, row), 
-                type = this.extractField("type", cols, row), 
-                description = this.extractField("description", cols, row);
+                String name = this.extractField("name", cols, row), color = this.extractField("color", cols, row),
+                        size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
+                        description = this.extractField("description", cols, row);
 
                 prods[i] = new Product(id, type, name, description, price, color, size);
 
             }
 
             return prods;
-        } 
-        else {
+        } else {
             System.out.println(dbConnector.getErrorMessage());
 
             return null;
