@@ -60,7 +60,11 @@ public class DatabaseAccess {
 
     public static void main() {
         DatabaseAccess d = new DatabaseAccess();
-        d.getProducts();
+        Product[] prods = d.getProducts();
+        for(Product p : prods) p.setAmount(1);
+        Account a = d.getAccountById(1);
+        Order o = new Order(-1, prods, a, null, null);
+        d.addOrder(o);
     }
 
     private String extractField(String fieldName, String[] colNames, String[] row) {
@@ -238,6 +242,119 @@ public class DatabaseAccess {
 
             return null;
         }
+
+    }
+
+    private Account getAccountById(int pId) {
+        this.dbConnector.executeStatement("select * from accounts where id = " + pId);
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+        if (res != null) {
+            String[] cols = res.getColumnNames();
+            if (res.getRowCount() > 0) {
+                String[] row = res.getData()[0];
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                String name = this.extractField("name", cols, row);
+                String address = this.extractField("address", cols, row);
+                String email = this.extractField("email", cols, row);
+                String creditCard = this.extractField("credit_card", cols, row);
+                Product lastViewedProduct = this
+                        .getProductById(Integer.parseInt(this.extractField("last_viewed_product_id", cols, row)));
+
+                return new Account(id, name, address, email, creditCard, lastViewedProduct);
+            } else {
+                return null;
+            }
+        } else {
+            System.out.println(this.dbConnector.getErrorMessage());
+            return null;
+        }
+
+    }
+
+    private Product[] getProductsInOrderId(int pId) {
+        this.dbConnector.executeStatement("SELECT * from order_stock WHERE order_id = " + pId);
+
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+
+        if (res != null) {
+            String[] cols = res.getColumnNames();
+            Product[] products = new Product[res.getRowCount()];
+
+            for (int i = 0; i < res.getRowCount(); i++) {
+
+                String[] row = res.getData()[i];
+
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                int stockId = Integer.parseInt(this.extractField("stock_id", cols, row));
+                int amount = Integer.parseInt(this.extractField("amount", cols, row));
+
+                Product p = this.getProductById(stockId);
+                p.setAmount(amount);
+
+                products[i] = p;
+
+            }
+
+            return products;
+        } else {
+            System.out.println(dbConnector.getErrorMessage());
+
+            return null;
+        }
+    }
+
+    public Order[] getOrders() {
+        this.dbConnector.executeStatement(
+                "SELECT o.id, o.account_id, o.order_date, os.status from orders o JOIN  order_status os ON os.id = o.status_id;");
+
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+
+        if (res != null) {
+            String[] cols = res.getColumnNames();
+            Order[] orders = new Order[res.getRowCount()];
+
+            for (int i = 0; i < res.getRowCount(); i++) {
+
+                String[] row = res.getData()[i];
+
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                int accountId = Integer.parseInt(this.extractField("account_id", cols, row));
+                Date orderDate = null;
+                try {
+                    orderDate = this.df.parse(this.extractField("order_date", cols, row));
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                String status = this.extractField("status", cols, row);
+
+                orders[i] = new Order(id, this.getProductsInOrderId(id), this.getAccountById(accountId), orderDate,
+                        status);
+
+            }
+
+            return orders;
+        } else {
+            System.out.println(dbConnector.getErrorMessage());
+
+            return null;
+        }
+    }
+
+    public boolean addOrder(Order o) {
+        this.dbConnector.executeStatement("INSERT INTO orders(account_id) VALUES (" + o.getAccount().getId() + ");");
+
+        Order[] orders = this.getOrders();
+        Order latestOrder = orders[orders.length - 1];
+        int lastInsertedId = latestOrder.getId();
+
+        Product[] prodsInOrder = o.getProducts();
+
+        for (int i = 0; i < prodsInOrder.length; i++) {
+            this.dbConnector.executeStatement("INSERT INTO order_stock(order_id, stock_id, amount) VALUES ("
+                    + lastInsertedId + ", " + prodsInOrder[i].getId() + ", " + prodsInOrder[i].getAmount() + ");");
+        }
+
+        return true;
 
     }
 }

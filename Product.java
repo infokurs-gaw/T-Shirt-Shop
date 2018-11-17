@@ -15,6 +15,7 @@ public class Product
     private double price;
     private String color;
     private String size;
+    private int amount;
 
     /**
      * Konstruktor für Objekte der Klasse Produkt
@@ -56,6 +57,14 @@ public class Product
     
     public double getPrice(){
         return price;
+    }
+
+    public void setAmount(int val){
+        this.amount = val;
+    }
+
+    public int getAmount(){
+        return amount;
     }
 
 }

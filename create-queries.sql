@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`account_id`	TEXT,
 	`order_date`	DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-	`status_id`	INTEGER,
+	`status_id`	INTEGER NOT NULL DEFAULT (1),
 	FOREIGN KEY(`status_id`) REFERENCES `order_status`(`id`),
 	FOREIGN KEY(`account_id`) REFERENCES `accounts`(`id`)
 );
@@ -87,8 +87,10 @@ CREATE TABLE IF NOT EXISTS `accounts` (
 	`address`	TEXT NOT NULL,
 	`email`	VARCHAR ( 255 ) NOT NULL UNIQUE,
 	`password`	VARCHAR ( 255 ) NOT NULL,
-	`credit_card`	VARCHAR ( 255 ) UNIQUE
+	`credit_card`	VARCHAR ( 255 ) UNIQUE,
+	`last_viewed_product_id` INTEGER,
+	FOREIGN KEY (`last_viewed_product_id`) REFERENCES `stock`(`id`)
 );
-INSERT INTO `accounts` VALUES (1,'Celina','Bla Bla','celina@gaw.de','bieeeeebg','2554738');
+INSERT INTO `accounts` VALUES (1,'Celina','Bla Bla','celina@gaw.de','bieeeeebg','2554738', 1);
 CREATE VIEW stock_view AS SELECT s.id, p.name, color, size, amount from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id;
 COMMIT;
