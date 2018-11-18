@@ -24,6 +24,13 @@ public class DatabaseAccess
         DatabaseAccess d = new DatabaseAccess();
         Product p = d.getProductById(1);
         System.out.println(d.getAvailableAmountForProductInStock(p));
+
+        // Create object of account that should be added
+
+        Account newAccount = new Account(-1, "Hans Müller", "Musterstraße 13", "hans@müller.de", "0000-1111-222", null);
+
+        // If everything works correctly, this should output "true"
+        System.out.println(d.addAccount(newAccount, "123456789"));
     }
 
     private String extractField(String fieldName, String[] colNames, String[] row){
@@ -163,17 +170,13 @@ public class DatabaseAccess
 
     }
 
-    public boolean  addAccount(String name, String password,String address, String email, String creditcard, Account newAccount)
+    public boolean  addAccount(Account newAccount, String password)
     {
-        this.dbConnector.executeStatement("insert into accounts(name, address, email, password, credit_card ) values ('" +name+ "','" +address+"','"+email+"','"+password+"','" +creditcard+ "');");
-        QueryResult res = this.dbConnector.getCurrentQueryResult();
-        if (res != null) {
-            return true;
-        }
-        else{ 
-            return false;
-        }
 
-        
+        // Switched to use of formatted string because it is easier to read and write.
+        this.dbConnector.executeStatement(String.format("INSERT INTO accounts(name, address, email, password, credit_card) VALUES ('%s', '%s', '%s', '%s', '%s');", newAccount.getName(), newAccount.getAddress(), newAccount.getEmail(), password, newAccount.getCreditCard()));
+
+        // If there is no error, the method will return true.
+        return this.dbConnector.getErrorMessage() == null;        
     }
 }
