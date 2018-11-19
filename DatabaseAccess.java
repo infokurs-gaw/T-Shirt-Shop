@@ -157,8 +157,9 @@ public class DatabaseAccess
                 String address = this.extractField("address", cols, row);
                 String email = this.extractField("email", cols, row);
                 String creditCard = this.extractField("credit_card", cols, row);
-                // TODO getLastViewProduct
-                return new Account(id, name, address, email, creditCard, null);
+                int last_viewed_product_id = Integer.parseInt(this.extractField("last_viewed_product_id", cols, row));
+                
+                return new Account(id, name, address, email, creditCard, getProductById(last_viewed_product_id));
             }else{
                 return null;
             }
