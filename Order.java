@@ -14,12 +14,11 @@ public class Order
     private Account account;
     private Date date;
     private String status;
-    ArrayList<Product> orderList = new ArrayList<>();//Obejekt beeinhaltet Liste von bestellten Produkten und den zugehoerigen Account
 
-    public Order(int id, Product[] products, Account account, Date date, String status)
+    public Order(int id, Account account , Date date, String status)
     {
         this.id = id;
-        this.products = products;
+        this.products = null;
         this.account = account;
         this.date = date;
         this.status = status;
@@ -29,7 +28,7 @@ public class Order
         return id;
     }
     
-    public Product[] getProducts(){
+    public  Product[]  getProducts(){
         return products;
     }
     
@@ -44,6 +43,12 @@ public class Order
     public String getStatus(){
         return status;
     }
+    
+   public void setProducts(Product[] pArray) {
+       this.products = pArray;
+    }
+    
+    
 
   
 }
