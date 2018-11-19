@@ -31,10 +31,25 @@ public class ShopServer extends Server {
             register(Integer.valueOf(nachrichtTeil[1]),nachrichtTeil[2],nachrichtTeil[3],nachrichtTeil[4],nachrichtTeil[5],nachrichtTeil[6]);
         }
 
+<<<<<<< HEAD
         else if(nachrichtTeil[0].equals("ADD")) {
 
             addNewProducts(pClientIP, Integer.valueOf(nachrichtTeil[1]), Integer.valueOf(nachrichtTeil[2]));
 
+=======
+        else if(nachrichtTeil[0].equals("BESTAETIGUNG")) {
+            if(nachrichtTeil [1] .equals("ja")) {  
+                send (pClientIP, pClientPort, "Vielen Dank für Ihre Bestellung."); 
+                closeConnection(pClientIP, pClientPort);  
+                //Basket Methode purchase ausfuehren
+            }
+            else if (nachrichtTeil[1].equals("nein")) {
+                closeConnection(pClientIP, pClientPort);  
+            } 
+            else {  
+                send(pClientIP, pClientPort, "Bitte geben Sie ja oder nein ein.");
+            }
+>>>>>>> origin/warenkorb
         }
 
         else if(nachrichtTeil[0].equals("BUY")) {

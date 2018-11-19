@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.*;
 /**
  * Beschreiben Sie hier die Klasse Bestellung.
  * 
@@ -13,7 +14,6 @@ public class Order
     private Account account;
     private Date date;
     private String status;
-    
 
     public Order(int id, Product[] products, Account account, Date date, String status)
     {
@@ -28,7 +28,7 @@ public class Order
         return id;
     }
     
-    public Product[] getProducts(){
+    public  Product[]  getProducts(){
         return products;
     }
     
@@ -43,6 +43,12 @@ public class Order
     public String getStatus(){
         return status;
     }
+    
+   public void setProducts(Product[] pArray) {
+       this.products = pArray;
+    }
+    
+    
 
   
 }
