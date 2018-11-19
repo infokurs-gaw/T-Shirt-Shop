@@ -158,8 +158,8 @@ public class DatabaseAccess
                 String email = this.extractField("email", cols, row);
                 String creditCard = this.extractField("credit_card", cols, row);
                 int last_viewed_product_id = Integer.parseInt(this.extractField("last_viewed_product_id", cols, row));
-                
-                return new Account(id, name, address, email, creditCard, getProductById(last_viewed_product_id));
+                Product lastViewedProduct = getProductById(last_viewed_product_id);
+                return new Account(id, name, address, email, creditCard, lastViewedProduct);
             }else{
                 return null;
             }
