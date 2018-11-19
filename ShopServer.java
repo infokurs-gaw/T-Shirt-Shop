@@ -15,7 +15,7 @@ public class ShopServer extends Server {
     public void processNewConnection(String pClientIP, int pClientPort) {
         clientIP = pClientIP;
 
-        send(pClientIP, pClientPort, "Willkommen! Wählen Sie eine Größe und eine Farbe für Ihr T-Shirt.");
+        send(pClientIP, pClientPort, "Willkommen! Wï¿½hlen Sie eine Grï¿½ï¿½e und eine Farbe fï¿½r Ihr T-Shirt.");
     }
 
     public void processMessage(String pClientIP, int pClientPort, String pMessage) {
@@ -31,25 +31,10 @@ public class ShopServer extends Server {
             register(Integer.valueOf(nachrichtTeil[1]),nachrichtTeil[2],nachrichtTeil[3],nachrichtTeil[4],nachrichtTeil[5],nachrichtTeil[6]);
         }
 
-<<<<<<< HEAD
         else if(nachrichtTeil[0].equals("ADD")) {
 
             addNewProducts(pClientIP, Integer.valueOf(nachrichtTeil[1]), Integer.valueOf(nachrichtTeil[2]));
 
-=======
-        else if(nachrichtTeil[0].equals("BESTAETIGUNG")) {
-            if(nachrichtTeil [1] .equals("ja")) {  
-                send (pClientIP, pClientPort, "Vielen Dank fÃ¼r Ihre Bestellung."); 
-                closeConnection(pClientIP, pClientPort);  
-                //Basket Methode purchase ausfuehren
-            }
-            else if (nachrichtTeil[1].equals("nein")) {
-                closeConnection(pClientIP, pClientPort);  
-            } 
-            else {  
-                send(pClientIP, pClientPort, "Bitte geben Sie ja oder nein ein.");
-            }
->>>>>>> origin/warenkorb
         }
 
         else if(nachrichtTeil[0].equals("BUY")) {
@@ -67,12 +52,12 @@ public class ShopServer extends Server {
         //         if(nachrichtTeil[0].equals("TSHIRT")) {
         //             send(pClientIP, pClientPort, "Die Groesse ist " + nachrichtTeil[1] + 
         //                                          ", die Farbe ist " + nachrichtTeil[2] + 
-        //                                          " und es kostet 19,99 Euro! Bitte bestätigen Sie die Bestellung.");
+        //                                          " und es kostet 19,99 Euro! Bitte bestï¿½tigen Sie die Bestellung.");
         //         }
         // 
         //         else if(nachrichtTeil[0].equals("BESTAETIGUNG")) {
         //             if(nachrichtTeil [1] .equals("ja")) {  
-        //                 send (pClientIP, pClientPort, "Vielen Dank für Ihre Bestellung."); 
+        //                 send (pClientIP, pClientPort, "Vielen Dank fï¿½r Ihre Bestellung."); 
         //                 closeConnection(pClientIP, pClientPort);  
         //             }
         //             else if (nachrichtTeil[1].equals("nein")) {
@@ -140,7 +125,7 @@ public class ShopServer extends Server {
 
     public void logOff(String pClientIP, int pClientPort){
         accounts.remove(pClientIP);
-        send(pClientIP, pClientPort, "gggTschüss!!!");
+        send(pClientIP, pClientPort, "gggTschï¿½ss!!!");
         //closeConnection(pClientIP, pClientPort);
         /*
          * ba.stopTimer(accounts.get(pClientIP));
