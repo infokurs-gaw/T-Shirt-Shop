@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 
 /**
  * Beschreiben Sie hier die Klasse BehaviorAnalyzer.
+=======
+import java.util.Date;
+import java.sql.Timestamp;
+/**
+ * Beschreiben Sie hier die Klasse BehaiviorAnalyzer.
+>>>>>>> origin/verhalten-timer
  * 
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
@@ -149,5 +156,30 @@ public class BehaviorAnalyzer
         else{
             return obj;
         }
+    }
+    
+    public void startTimer(Account account){
+        //Datenbank.logLogin(account);
+    }
+
+    public void stopTimer(Account account){  
+        //Datenbank.logLogout(account);
+    }
+
+    public long timespend(Account account){
+        Date[] loginDates = DatabaseAccess.getLoginDates(account);
+        Date[] logoutDates = DatabaseAccess.getLogoutDates(account);
+        long time= 0;
+        for(int i=0; i<loginDates.length; i++){
+            long a = loginDates[i].getTime();
+            long b = logoutDates[i].getTime();
+            time = time + (b-a); 
+        }
+        if(loginDates.length!=logoutDates.length){
+            long a = loginDates[loginDates.length-1].getTime();
+            long b = date.getTime();
+            time = time + (b-a); 
+        }
+        return time;
     }
 }
