@@ -58,15 +58,6 @@ public class DatabaseAccess {
         }
     }
 
-    public static void main() {
-        DatabaseAccess d = new DatabaseAccess();
-        Product[] prods = d.getProducts();
-        for(Product p : prods) p.setAmount(1);
-        Account a = d.getAccountById(1);
-        Order o = new Order(-1, prods, a, null, null);
-        d.addOrder(o);
-    }
-
     private String extractField(String fieldName, String[] colNames, String[] row) {
         int index = -1;
         for (int i = 0; i < row.length; i++) {
@@ -355,6 +346,42 @@ public class DatabaseAccess {
         }
 
         return true;
+    }
+    
+    public Account getAccount(String user, String password)
+    {
+        this.dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = '" + password + "';");
+        QueryResult res = this.dbConnector.getCurrentQueryResult();
+        if (res != null) {            
+            String[] cols = res.getColumnNames();
+            if(res.getRowCount() > 0){
+                String[] row = res.getData()[0];
+                int id = Integer.parseInt(this.extractField("id", cols, row));
+                String name = this.extractField("name", cols, row);
+                String address = this.extractField("address", cols, row);
+                String email = this.extractField("email", cols, row);
+                String creditCard = this.extractField("credit_card", cols, row);
+                int last_viewed_product_id = Integer.parseInt(this.extractField("last_viewed_product_id", cols, row));
+                Product lastViewedProduct = getProductById(last_viewed_product_id);
+                return new Account(id, name, address, email, creditCard, lastViewedProduct);
+            }else{
+                return null;
+            }
+        } 
+        else {
+            System.out.println(this.dbConnector.getErrorMessage());
+            return null;
+        }
 
+    }
+
+    public boolean  addAccount(Account newAccount, String password)
+    {
+
+        // Switched to use of formatted string because it is easier to read and write.
+        this.dbConnector.executeStatement(String.format("INSERT INTO accounts(name, address, email, password, credit_card) VALUES ('%s', '%s', '%s', '%s', '%s');", newAccount.getName(), newAccount.getAddress(), newAccount.getEmail(), password, newAccount.getCreditCard()));
+
+        // If there is no error, the method will return true.
+        return this.dbConnector.getErrorMessage() == null;        
     }
 }
