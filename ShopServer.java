@@ -15,7 +15,7 @@ public class ShopServer extends Server {
     public void processNewConnection(String pClientIP, int pClientPort) {
         clientIP = pClientIP;
 
-        send(pClientIP, pClientPort, "Willkommen! WÃ¤hlen Sie eine GrÃ¶ÃŸe und eine Farbe fÃ¼r Ihr T-Shirt.");
+        send(pClientIP, pClientPort, "Willkommen! Wählen Sie eine Größe und eine Farbe für Ihr T-Shirt.");
     }
 
     public void processMessage(String pClientIP, int pClientPort, String pMessage) {
@@ -28,18 +28,36 @@ public class ShopServer extends Server {
         }
 
         else if(nachrichtTeil[0].equals("REGISTER")) {
-            //register(nachrichtTeil[1],nachrichtTeil[2],nachrichtTeil[3],nachrichtTeil[4],nachrichtTeil[5],nachrichtTeil[6]);
+            register(Integer.valueOf(nachrichtTeil[1]),nachrichtTeil[2],nachrichtTeil[3],nachrichtTeil[4],nachrichtTeil[5],nachrichtTeil[6]);
+        }
+
+        else if(nachrichtTeil[0].equals("ADD")) {
+
+            addNewProducts(pClientIP, Integer.valueOf(nachrichtTeil[1]), Integer.valueOf(nachrichtTeil[2]));
+
+        }
+
+        else if(nachrichtTeil[0].equals("BUY")) {
+
+            buy(pClientIP);
+
+        }
+
+        else if(nachrichtTeil[0].equals("LOGOFF")) {
+
+            logOff(pClientIP, pClientPort);
+
         }
 
         //         if(nachrichtTeil[0].equals("TSHIRT")) {
         //             send(pClientIP, pClientPort, "Die Groesse ist " + nachrichtTeil[1] + 
         //                                          ", die Farbe ist " + nachrichtTeil[2] + 
-        //                                          " und es kostet 19,99 Euro! Bitte bestÃ¤tigen Sie die Bestellung.");
+        //                                          " und es kostet 19,99 Euro! Bitte bestätigen Sie die Bestellung.");
         //         }
         // 
         //         else if(nachrichtTeil[0].equals("BESTAETIGUNG")) {
         //             if(nachrichtTeil [1] .equals("ja")) {  
-        //                 send (pClientIP, pClientPort, "Vielen Dank fÃ¼r Ihre Bestellung."); 
+        //                 send (pClientIP, pClientPort, "Vielen Dank für Ihre Bestellung."); 
         //                 closeConnection(pClientIP, pClientPort);  
         //             }
         //             else if (nachrichtTeil[1].equals("nein")) {
@@ -67,7 +85,7 @@ public class ShopServer extends Server {
         Account newAccount = new Account(id, name, address, email, creditCard, null);
 
         /*
-         *  Hier Account zu Datenbank hinzufügen!
+         *  Hier Account zu Datenbank hinzuf?gen!
          *  
          *  
          */
@@ -85,18 +103,18 @@ public class ShopServer extends Server {
          */
     }
 
-    public void addNewProducts(String pClientIP, int pClientPort, String pMessage) {
+    public void addNewProducts(String pClientIP, int id, int amount) {
         /*
-         * String[] nachrichtTeil = pMessage.split(":");     *** Erwartete Form "id:amount" ***
          * 
-         * Product newProduct = db.getProduct(nachrichtTeil[0]);
          * 
-         * basket.addProduct(newProduct, nachrichtTeil[1], accounts.get(pClientIP), );
+         * Product newProduct = db.getProduct(id);
+         * 
+         * basket.addProduct(newProduct, amount, accounts.get(pClientIP) );
          * 
          */
     }
 
-    public void buy(String pClientIP, int pClientPort){
+    public void buy(String pClientIP){
         /* 
          * Order newOrder = new Order(-1, basket.getProducts(), accounts.get(pClientIP), "AUFGEGEBEN");
          * 
@@ -107,7 +125,8 @@ public class ShopServer extends Server {
 
     public void logOff(String pClientIP, int pClientPort){
         accounts.remove(pClientIP);
-
+        send(pClientIP, pClientPort, "gggTschüss!!!");
+        //closeConnection(pClientIP, pClientPort);
         /*
          * ba.stopTimer(accounts.get(pClientIP));
          * 
