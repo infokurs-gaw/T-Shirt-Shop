@@ -18,10 +18,11 @@ public class BehaviorAnalyzer
 
     public BehaviorAnalyzer()
     {
+        
 
     }
 
-    public Product[] getLastSoldProduct(Account account){
+    public Product[] getLastSoldProduc(Account account){
         int id ;
         int val = 5;
         id = account.getId();
@@ -44,7 +45,26 @@ public class BehaviorAnalyzer
         }
     }
 
-    public Product getLastViewedObject(Account account){
+    public Product[] getLastSoldProduct ( Account account) {
+        Product[] orders = new Product[getOrders().length];
+        int length = getOrders().length
+        orders = getOrders();
+        Product [] SoldProducts = new Product[5];
+        int id = account.getId;
+        int a = 0;
+        int b = 0;
+        while(SoldProducts[4]!= null){
+            if(orders[length-a].getId == id) {
+                SoldProducts[b] = orders[length-a];
+                b++;
+            }
+            a++
+        }
+        return SoldProducts[];
+
+    }
+
+    public Product[] getLastViewedObject(Account account){
         Product obj = new Product[1];
         obj = getAccount.lastViewedProduct();
         if(obj.length =0){
