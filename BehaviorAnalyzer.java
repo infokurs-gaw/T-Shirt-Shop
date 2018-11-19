@@ -7,18 +7,18 @@
  */
 public class BehaviorAnalyzer
 {   
-    public Product[] Testprodukte = new Product [8];
-    public String[] Typ = new String[5];
+    public Product[] Orders = new Product [8]; // Das muss entfernt sein
+    public String[] Typ = new String[5]; // Das muss entfernt sein
 
     public BehaviorAnalyzer() {
-        Testprodukte[1] = new Product(1,"Shirt","Gelb","1",15.22,"Gelb","XL");
-        Testprodukte[2] = new Product(1,"Shirt2","Gelb","2",15.22,"Gelb","XL");
-        Testprodukte[3] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
-        Testprodukte[4] = new Product(1,"Shirt4","Gelb","4",15.22,"Gelb","XL");
-        Testprodukte[0] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
-        Testprodukte[5] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
-        Testprodukte[6] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
-        Testprodukte[7] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
+       Orders[1] = new Product(1,"Shirt","Gelb","1",15.22,"Gelb","XL");// Das folgende muss entfernt werden
+        Orders[2] = new Product(1,"Shirt2","Gelb","2",15.22,"Gelb","XL");
+        Orders[3] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
+        Orders[4] = new Product(1,"Shirt4","Gelb","4",15.22,"Gelb","XL");
+        Orders[0] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
+        Orders[5] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
+        Orders[6] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
+        Orders[7] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
         Typ[0]= "Shirt";
         Typ[1]= "Shirt1";
         Typ[2]= "Shirt2";
@@ -32,31 +32,40 @@ public class BehaviorAnalyzer
      * Zurück gegeben werden soll ein array aus den besten 10 Produkten sortiert das [0] das beste 
      * Produkt ist
      */
-    public String[] getTop10Products () {
-        int length = 0;
+    public String[] getTop10Products () {        
+        //Die benötigten Arrays der Datenbank werden gespeichert
+             
+        //Product[] Orders = new Product [DatabaseAccess.getOrders.length];// Muss rein
+        // Orders[] = databaseAccess.getOrders[];// Muss rein
+     
+        //String[] Typ = new String [DatabaseAccess.getProducts.length];// Muss rein
+        // Typ[] = DatabaseAccess.getProducts; // Muss rein
+        
+        // Variablen die zählen sollen
+        
         int a = 0;
-        length = Testprodukte.length;  
-        // Zwei Arrays Das erste Arry soll nur die Produkttypen enthalten 
-        // Das zweite Array soll dann weiter die Anzahl an gekauften Objekten darstellen
-        String[] ProductToCount = new String [Typ.length];
-        int[] Counter = new int[Typ.length];
-        ProductToCount = Typ;
 
-        while(a<length){
-            String typ = Testprodukte[a].getType();
+        int[] Counter = new int[Typ.length]; // Das zweite Array das die selbe länge wie die Menge an Typen hat um parralel zu speichern wie oft
+        // ein Produkt gekauft wurde
+        
+        // Er geht durch das Array durch und für jedes gekaufte Produkt setzt er den Zähler höher
+
+        while(a<Orders.length){
+            String typtmp = Orders[a].getType();
             int b = 0;
-            while(typ != Typ[b]){
+            while(typtmp != Typ[b]){
                 b++;   
                 
             }            
             Counter[b] ++; 
             a++;
         }
-        // Jetzt müssen die Array nur nach der Anzahl geordnet werden
+        // Jetzt muss das Array nur nach der Anzahl geordnet werden hier mit einem Bubblesort aber zuvor wird ein Tempöräres Array erstellt da
+        // das normale Array noch gebraucht wird
         String[] Typtmp = new String[Typ.length];
         Typtmp = Typ;
 
-        for (int j=Typ.length; j>0; j--) {
+        for (int j=Typtmp.length; j>0; j--) {
             for (int i=0; i<j-1; i++) {
                 if (Counter[i] > Counter[i+1]) {
                     int temp = Counter[i];
@@ -68,13 +77,14 @@ public class BehaviorAnalyzer
                 }
             }
         }
-        // Das Array muss nur noch umgedreht werden damit das an erster Stelle das meistgekaufte Produkt ist
+        // Das Array muss nur noch umgedreht werden damit das an erster Stelle das meistgekaufte Produkt ist, da der Bubbleso
+        
         String[] Typarray = new String [Typtmp.length];
-        for(int c = 0; c<Typtmp.length; c++){
-            int d = Typtmp.length;
+        int d = Typtmp.length;
+        for(int c = 0; c<Typtmp.length; c++){            
             Typarray[c] = Typtmp[d-c-1];
         }
-        
+        // Das sortierte Array wird zurück gegeben
         return Typarray;
     }
     
