@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 /**
  * Beschreiben Sie hier die Klasse BehaviorAnalyzer.
@@ -12,30 +11,19 @@ import java.sql.Timestamp;
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
+
 public class BehaviorAnalyzer
 {   
-    public Product[] Orders = new Product [8]; // Das muss entfernt sein
-    public String[] Typ = new String[5]; // Das muss entfernt sein
 
     public Product lastViewedProduct;
     public Product lastSoldProducts;
     public int datetime;
+
+    private DatabaseAccess db = new DatabaseAccess();
+
     // anzahl an suzugeben produkten
 
     public BehaviorAnalyzer() {
-       Orders[1] = new Product(1,"Shirt","Gelb","1",15.22,"Gelb","XL");// Das folgende muss entfernt werden
-        Orders[2] = new Product(1,"Shirt2","Gelb","2",15.22,"Gelb","XL");
-        Orders[3] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
-        Orders[4] = new Product(1,"Shirt4","Gelb","4",15.22,"Gelb","XL");
-        Orders[0] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
-        Orders[5] = new Product(1,"Shirt4","Gelb","0",15.22,"Gelb","XL");
-        Orders[6] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
-        Orders[7] = new Product(1,"Shirt2","Gelb","3",15.22,"Gelb","XL");
-        Typ[0]= "Shirt";
-        Typ[1]= "Shirt1";
-        Typ[2]= "Shirt2";
-        Typ[3]= "Shirt3";
-        Typ[4]= "Shirt4";
 
     }
 
@@ -44,36 +32,62 @@ public class BehaviorAnalyzer
      * Zurï¿½ck gegeben werden soll ein array aus den besten 10 Produkten sortiert das [0] das beste 
      * Produkt ist
      */
+
     public String[] getTop10Products () {        
         //Die benï¿½tigten Arrays der Datenbank werden gespeichert
-             
-        //Product[] Orders = new Product [DatabaseAccess.getOrders.length];// Muss rein
-        // Orders[] = databaseAccess.getOrders[];// Muss rein
-     
-        //String[] Typ = new String [DatabaseAccess.getProducts.length];// Muss rein
-        // Typ[] = DatabaseAccess.getProducts; // Muss rein
-        
-        // Variablen die zï¿½hlen sollen
-        
-        int a = 0;
+        // in order2 wird das Array gespeichert was noch nicht die volle Länge hat
+        Order[] orders = db.getOrders();
+        String[] Typ = new String[db.getProducts().length]; 
+        for(int a = 0 ;db.getProducts().length> a; a++) {
+            Typ[a] = db.getProducts()[a].getType();
+        }
+        // Nur zaehlvariable
 
+        // Eine Variable die die Länge des Arrays bestimmt
+        int lengthArray = 0;
+        for(int b = 0; orders.length > b ; b++) {
+            for(int i = 0; orders[b].getProducts().length> i; i++){
+                lengthArray ++;
+                if(orders[b].getProducts()[i].getAmount()>1) {
+                    lengthArray += orders[b].getProducts()[i].getAmount()-1;
+                }
+            }
+        }
+        String[] ordersType = new String[lengthArray]; 
+        int f = 0; 
+
+        for(int b = 0; orders.length > b ; b++) {
+            for(int i = 0; orders[b].getProducts().length> i; i++){
+                ordersType[f] = orders[b].getProducts()[i].getType();  
+                f++;
+                if(orders[b].getProducts()[i].getAmount()>1) {
+                    for(int a = 1; orders[b].getProducts()[i].getAmount()>a; a++) {
+                        ordersType[f] = orders[b].getProducts()[i].getType();  
+                        f++;
+                    }
+                }
+            }
+        }
         int[] Counter = new int[Typ.length]; // Das zweite Array das die selbe lï¿½nge wie die Menge an Typen hat um parralel zu speichern wie oft
         // ein Produkt gekauft wurde
-        
-        // Er geht durch das Array durch und fï¿½r jedes gekaufte Produkt setzt er den Zï¿½hler hï¿½her
 
-        while(a<Orders.length){
-            String typtmp = Orders[a].getType();
+        // Er geht durch das Array durch und fï¿½r jedes gekaufte Produkt setzt er den Zï¿½hler hï¿½her
+        for(int a = 0 ;ordersType.length>a; a++){
+            String typtmp = ordersType[a];
             int b = 0;
-            while(typtmp != Typ[b]){
-                b++;   
-                
-            }            
-            Counter[b] ++; 
-            a++;
+            if(typtmp == Typ[b]){
+                Counter[b] ++;
+            }else {
+                while(typtmp == Typ[b]){
+                    b++;  
+
+                }            
+                Counter[b] ++; 
+            }
         }
         // Jetzt muss das Array nur nach der Anzahl geordnet werden hier mit einem Bubblesort aber zuvor wird ein Tempï¿½rï¿½res Array erstellt da
         // das normale Array noch gebraucht wird
+
         String[] Typtmp = new String[Typ.length];
         Typtmp = Typ;
 
@@ -90,96 +104,83 @@ public class BehaviorAnalyzer
             }
         }
         // Das Array muss nur noch umgedreht werden damit das an erster Stelle das meistgekaufte Produkt ist, da der Bubbleso
-        
+
         String[] Typarray = new String [Typtmp.length];
         int d = Typtmp.length;
         for(int c = 0; c<Typtmp.length; c++){            
             Typarray[c] = Typtmp[d-c-1];
         }
-        // Das sortierte Array wird zurï¿½ck gegeben
-        return Typarray;
-    }
-    
-    public String[] getType() {
-        return Typ;
-    }
-
-
-    public Product[] getLastSoldProduc(Account account){
-        int id ;
-        int val = 5;
-        id = account.getId();
-        Product[] order= new Product[5];
-        order= giveOrders(id);
-        new array (giveOrders) = array;
-        //datenbank abfragen und array bekommen 
-        //array muss order heiï¿½en
-        if(order.length=!0){
-            return Product(); 
-            int a = array.length;
-            Product[] tmp = new Product[val];
-            for(int a = 0;a>5;a++) {
-                tmp[a] = array[a];
-            }
-            return tmp;
+        // Das sortierte Array muss nur noch auf die lange von 10 gekürzt werden
+        String[] returnArray = new String [10];
+        for(int x = 0; x< 10;x++) {
+            returnArray[x] = Typarray[x];
         }
-        else{
-            return null;
-        }
+        return returnArray;
     }
 
     public Product[] getLastSoldProduct ( Account account) {
-        Product[] orders = new Product[getOrders().length];
-        int length = getOrders().length
-        orders = getOrders();
-        Product [] SoldProducts = new Product[5];
-        int id = account.getId;
+        Order[] orders = new Order[db.getOrders().length];
+        orders = db.getOrders();
+        Product[] SoldProducts = new Product[5];
+        int id = account.getId();
         int a = 0;
         int b = 0;
-        while(SoldProducts[4]!= null){
-            if(orders[length-a].getId == id) {
-                SoldProducts[b] = orders[length-a];
-                b++;
+        int c = 0;
+        System.out.println(account.getId());
+
+        while(SoldProducts[4]== null && a< db.getOrders().length){
+            if(orders[a].getAccount().getId() == account.getId()) {
+                System.out.println(orders[a].getAccount().getId());
+                if(orders[a].getProducts().length>1) {
+                    while(orders[a].getProducts().length>b && b< 4){
+                        SoldProducts[c] = orders[a].getProducts()[b];
+                        c++;
+                        b++;
+                    }
+                }else{
+                    SoldProducts[c] = orders[a].getProducts()[b];
+                    c++;
+                    b++;
+                    a++;
+                }
             }
-            a++
+            a++;
+
+            System.out.println("hallo");
         }
-        return SoldProducts[];
+        return SoldProducts;
 
     }
 
-    public Product[] getLastViewedObject(Account account){
-        Product obj = new Product[1];
-        obj = getAccount.lastViewedProduct();
-        if(obj.length =0){
-            return null;
-        }
-        else{
-            return obj;
-        }
+    /**
+     * Gibt das zuletzt angeschaute Produkt wieder aus. Wenn noch kein angeschaut wurde dann nur null
+     */
+    public Product getLastViewedObject(Account account){
+        return account.getLastViewedProduct();
     }
-    
+
     public void startTimer(Account account){
-        //Datenbank.logLogin(account);
+        db.logLogin(account);
     }
 
     public void stopTimer(Account account){  
-        //Datenbank.logLogout(account);
+        db.logLogout(account);
     }
 
-    public long timespend(Account account){
-        Date[] loginDates = DatabaseAccess.getLoginDates(account);
-        Date[] logoutDates = DatabaseAccess.getLogoutDates(account);
-        long time= 0;
-        for(int i=0; i<loginDates.length; i++){
-            long a = loginDates[i].getTime();
-            long b = logoutDates[i].getTime();
-            time = time + (b-a); 
-        }
-        if(loginDates.length!=logoutDates.length){
-            long a = loginDates[loginDates.length-1].getTime();
-            long b = date.getTime();
-            time = time + (b-a); 
-        }
-        return time;
-    }
+    // public long timespend(Account account){
+    // Date[] loginDates = db.getLoginDates(account);
+    // Date[] logoutDates = db.getLogoutDates(account);
+    // long time= 0;
+    // for(int i=0; i<loginDates.length; i++){
+    // long a = loginDates[i].getTime();
+    // long b = logoutDates[i].getTime();
+    // time = time + (b-a); 
+    // }
+    // if(loginDates.length!=logoutDates.length){
+    // long a = loginDates[loginDates.length-1].getTime();
+    // long b = date.getTime();
+    // time = time + (b-a); 
+    // }
+    // return time;
+    // }
 }
