@@ -1,9 +1,9 @@
-
+import java.util.Date;
+import java.sql.Timestamp;
 /**
  * Beschreiben Sie hier die Klasse BehaviorAnalyzer.
 =======
-import java.util.Date;
-import java.sql.Timestamp;
+
 /**
  * Beschreiben Sie hier die Klasse BehaiviorAnalyzer.
 >>>>>>> origin/verhalten-timer
@@ -146,7 +146,6 @@ public class BehaviorAnalyzer
             }
             a++;
 
-            System.out.println("hallo");
         }
         return SoldProducts;
 
@@ -167,20 +166,42 @@ public class BehaviorAnalyzer
         db.logLogout(account);
     }
 
-    // public long timespend(Account account){
-    // Date[] loginDates = db.getLoginDates(account);
-    // Date[] logoutDates = db.getLogoutDates(account);
-    // long time= 0;
-    // for(int i=0; i<loginDates.length; i++){
-    // long a = loginDates[i].getTime();
-    // long b = logoutDates[i].getTime();
-    // time = time + (b-a); 
-    // }
-    // if(loginDates.length!=logoutDates.length){
-    // long a = loginDates[loginDates.length-1].getTime();
-    // long b = date.getTime();
-    // time = time + (b-a); 
-    // }
-    // return time;
-    // }
+    public long timespend(Account account){
+        Date[] loginDates =  db.getLoginDates(account);
+        Date[] logoutDates =  db.getLogoutDates(account);
+        long time= 0;
+        for(int i=0; i<loginDates.length; i++){
+            long a = loginDates[i].getTime();
+            long b = logoutDates[i].getTime();
+            time = time + (b-a); 
+        }
+        if(loginDates.length!=logoutDates.length){
+            long a = loginDates[loginDates.length-1].getTime();
+            long b = new Date().getTime();
+            time = time + (b-a); 
+        }
+        return time;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
