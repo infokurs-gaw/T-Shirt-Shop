@@ -42,7 +42,7 @@ public class DatabaseAccess {
                 }
 
                 System.out.println("SQLite Database " + dbName
-                        + " should now be successfully initialized and populated. Continuing...");
+                    + " should now be successfully initialized and populated. Continuing...");
 
             } else {
                 System.out.println("Skipping init... db file already exists.");
@@ -73,17 +73,17 @@ public class DatabaseAccess {
 
     public void logLogin(Account a) {
         this.dbConnector
-                .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGIN');");
+        .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGIN');");
     }
 
     public void logLogout(Account a) {
         this.dbConnector
-                .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGOUT');");
+        .executeStatement("INSERT INTO event_log(account_id, event) VALUES (" + a.getId() + ", 'LOGOUT');");
     }
 
     public Date[] getLoginDates(Account a) {
         this.dbConnector
-                .executeStatement("SELECT * from event_log el WHERE event = 'LOGIN' AND account_id = " + a.getId());
+        .executeStatement("SELECT * from event_log el WHERE event = 'LOGIN' AND account_id = " + a.getId());
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -113,7 +113,7 @@ public class DatabaseAccess {
 
     public Date[] getLogoutDates(Account a) {
         this.dbConnector
-                .executeStatement("SELECT * from event_log el WHERE event = 'LOGOUT' AND account_id = " + a.getId());
+        .executeStatement("SELECT * from event_log el WHERE event = 'LOGOUT' AND account_id = " + a.getId());
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -147,8 +147,8 @@ public class DatabaseAccess {
 
     public Product getProductById(int pId) {
         this.dbConnector.executeStatement(
-                "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id WHERE s.id = "
-                        + pId + " LIMIT 1;");
+            "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id WHERE s.id = "
+            + pId + " LIMIT 1;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -162,8 +162,8 @@ public class DatabaseAccess {
                 int id = Integer.parseInt(this.extractField("id", cols, row));
                 double price = Double.parseDouble(this.extractField("price", cols, row));
                 String name = this.extractField("name", cols, row), color = this.extractField("color", cols, row),
-                        size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
-                        description = this.extractField("description", cols, row);
+                size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
+                description = this.extractField("description", cols, row);
 
                 return new Product(id, type, name, description, price, color, size);
             } else {
@@ -205,7 +205,7 @@ public class DatabaseAccess {
 
     public Product[] getProducts() {
         this.dbConnector.executeStatement(
-                "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id;");
+            "SELECT s.id, p.name, color, size, type, price, description from stock s JOIN colors c ON s.color_id = c.id JOIN products p on p.id = s.product_id JOIN sizes si ON s.size_id = si.id JOIN product_types pt ON pt.id = p.product_type_id;");
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
         if (res != null) {
@@ -220,8 +220,8 @@ public class DatabaseAccess {
                 int id = Integer.parseInt(this.extractField("id", cols, row));
                 double price = Double.parseDouble(this.extractField("price", cols, row));
                 String name = this.extractField("name", cols, row), color = this.extractField("color", cols, row),
-                        size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
-                        description = this.extractField("description", cols, row);
+                size = this.extractField("size", cols, row), type = this.extractField("type", cols, row),
+                description = this.extractField("description", cols, row);
 
                 prods[i] = new Product(id, type, name, description, price, color, size);
 
@@ -248,8 +248,10 @@ public class DatabaseAccess {
                 String address = this.extractField("address", cols, row);
                 String email = this.extractField("email", cols, row);
                 String creditCard = this.extractField("credit_card", cols, row);
+                String lastViewedProductIdString = this.extractField("last_viewed_product_id", cols, row);
+                int last_viewed_product_id = !lastViewedProductIdString.equals("NULL") ? Integer.parseInt(lastViewedProductIdString) : -1;
                 Product lastViewedProduct = this
-                        .getProductById(Integer.parseInt(this.extractField("last_viewed_product_id", cols, row)));
+                    .getProductById(last_viewed_product_id);
 
                 return new Account(id, name, address, email, creditCard, lastViewedProduct);
             } else {
@@ -296,7 +298,7 @@ public class DatabaseAccess {
 
     public Order[] getOrders() {
         this.dbConnector.executeStatement(
-                "SELECT o.id, o.account_id, o.order_date, os.status from orders o JOIN  order_status os ON os.id = o.status_id;");
+            "SELECT o.id, o.account_id, o.order_date, os.status from orders o JOIN  order_status os ON os.id = o.status_id;");
 
         QueryResult res = this.dbConnector.getCurrentQueryResult();
 
@@ -319,7 +321,7 @@ public class DatabaseAccess {
                 String status = this.extractField("status", cols, row);
 
                 orders[i] = new Order(id, this.getProductsInOrderId(id), this.getAccountById(accountId), orderDate,
-                        status);
+                    status);
 
             }
 
@@ -342,12 +344,12 @@ public class DatabaseAccess {
 
         for (int i = 0; i < prodsInOrder.length; i++) {
             this.dbConnector.executeStatement("INSERT INTO order_stock(order_id, stock_id, amount) VALUES ("
-                    + lastInsertedId + ", " + prodsInOrder[i].getId() + ", " + prodsInOrder[i].getAmount() + ");");
+                + lastInsertedId + ", " + prodsInOrder[i].getId() + ", " + prodsInOrder[i].getAmount() + ");");
         }
 
         return true;
     }
-    
+
     public Account getAccount(String user, String password)
     {
         this.dbConnector.executeStatement("select * from accounts where email = '" + user + "' AND password = '" + password + "';");
@@ -361,7 +363,8 @@ public class DatabaseAccess {
                 String address = this.extractField("address", cols, row);
                 String email = this.extractField("email", cols, row);
                 String creditCard = this.extractField("credit_card", cols, row);
-                int last_viewed_product_id = Integer.parseInt(this.extractField("last_viewed_product_id", cols, row));
+                String lastViewedProductIdString = this.extractField("last_viewed_product_id", cols, row);
+                int last_viewed_product_id = !lastViewedProductIdString.equals("NULL") ? Integer.parseInt(lastViewedProductIdString) : -1;
                 Product lastViewedProduct = getProductById(last_viewed_product_id);
                 return new Account(id, name, address, email, creditCard, lastViewedProduct);
             }else{
