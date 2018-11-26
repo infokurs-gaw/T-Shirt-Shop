@@ -1,3 +1,5 @@
+package core;
+
 public class ShopClient extends Client {
 
     public ShopClient(String pServerIP, int pServerPort) {

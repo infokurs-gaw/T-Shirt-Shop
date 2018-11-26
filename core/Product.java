@@ -1,3 +1,5 @@
+package core;
+
 
 /**
  * Beschreiben Sie hier die Klasse Produkt.
