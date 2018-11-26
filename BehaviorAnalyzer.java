@@ -71,20 +71,23 @@ public class BehaviorAnalyzer
         int[] Counter = new int[Typ.length]; // Das zweite Array das die selbe lï¿½nge wie die Menge an Typen hat um parralel zu speichern wie oft
         // ein Produkt gekauft wurde
 
-        // Er geht durch das Array durch und fï¿½r jedes gekaufte Produkt setzt er den Zï¿½hler hï¿½her
+        //Er geht durch das Array durch und fï¿½r jedes gekaufte Produkt setzt er den Zï¿½hler hï¿½her
         for(int a = 0 ;ordersType.length>a; a++){
             String typtmp = ordersType[a];
             int b = 0;
-            if(typtmp == Typ[b]){
+            System.out.println(typtmp);
+            System.out.println(Typ[b]);
+            if(typtmp.equals(Typ[b])){
                 Counter[b] ++;
             }else {
-                while(typtmp == Typ[b]){
+                while(!typtmp.equals (Typ[b])){
                     b++;  
 
                 }            
                 Counter[b] ++; 
             }
         }
+
         // Jetzt muss das Array nur nach der Anzahl geordnet werden hier mit einem Bubblesort aber zuvor wird ein Tempï¿½rï¿½res Array erstellt da
         // das normale Array noch gebraucht wird
 
@@ -112,10 +115,14 @@ public class BehaviorAnalyzer
         }
         // Das sortierte Array muss nur noch auf die lange von 10 gekürzt werden
         String[] returnArray = new String [10];
-        for(int x = 0; x< 10;x++) {
-            returnArray[x] = Typarray[x];
+        if(Typarray.length > 10) {
+            for(int x = 0; x< 9;x++) {
+                returnArray[x] = Typarray[x];
+            }
+            return returnArray;
+        }else {
+            return Typarray;
         }
-        return returnArray;
     }
 
     public Product[] getLastSoldProduct ( Account account) {
@@ -183,25 +190,5 @@ public class BehaviorAnalyzer
         return time;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
