@@ -4,6 +4,8 @@ import java.io.*;
 
 public class ShopServer extends Server {
     DatabaseAccess db = new DatabaseAccess();
+    Basket basket;
+    BehaviorAnalyzer ba = new BehaviorAnalyzer();
     Map<String, Account> accounts = new HashMap<String, Account>();
 
     String clientIP;
@@ -39,13 +41,13 @@ public class ShopServer extends Server {
 
         else if(nachrichtTeil[0].equals("BUY")) {
 
-            buy(pClientIP, pClientPort);
+            //buy(pClientIP, pClientPort);
 
         }
 
         else if(nachrichtTeil[0].equals("LOGOFF")) {
 
-            logOff(pClientIP, pClientPort);
+            //logOff(pClientIP, pClientPort);
 
         }
 
@@ -94,13 +96,13 @@ public class ShopServer extends Server {
             Account newAccount = db.getAccount(email,pass);
 
             accounts.put(clientIP, newAccount);
-
+            basket = new Basket(newAccount);
         }
         else{
-            send(pClientIP, pClientPort, "Nutzername oder Passwort falsch! Bitte Ã¼berprÃ¼fen Sie Ihre Eingabe");
+            send(pClientIP, pClientPort, "ERROR:Nutzername oder Passwort falsch! Bitte Überprüfen Sie Ihre Eingabe");
         }
 
-        //ba.startTimer(accounts.get(pClientIP));
+        ba.startTimer(accounts.get(pClientIP));
     }
 
     public void addNewProducts(String pClientIP, int pClientPort, int id, int amount) {
@@ -108,4 +110,39 @@ public class ShopServer extends Server {
         if(db.getProductById(id)!=null){
             Product newProduct = db.getProductById(id);
 
-            i
+            if(db.getAvailableAmountForProductInStock(newProduct)!=-1){
+                realAmount = db.getAvailableAmountForProductInStock(newProduct);
+
+                if(realAmount>=amount){
+                    basket.addProduct(newProduct, amount);
+                }
+            }
+            else{
+                send(pClientIP, pClientPort, "Ein unerwarteter Fehler ist aufgetreten!");
+            }
+        }
+        else{
+            send(pClientIP, pClientPort, "Ein unerwarteter Fehler ist aufgetreten!");
+        }
+
+    }
+
+    public void buy(String pClientIP){
+
+        //Order newOrder = new Order(-1, basket.getProducts(), accounts.get(pClientIP), "AUFGEGEBEN");
+        //           
+        //db.addOrder(newOrder);
+
+    }
+    public void logOff(String pClientIP, int pClientPort){
+        ba.stopTimer(accounts.get(pClientIP));
+        
+        accounts.remove(pClientIP);
+        send(pClientIP, pClientPort, "Auf Wiedersehen!!!");
+        closeConnection(pClientIP, pClientPort);
+        
+        
+          
+         
+    }
+}
