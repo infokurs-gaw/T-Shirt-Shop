@@ -20,7 +20,7 @@ public class Product
     /**
      * Konstruktor für Objekte der Klasse Produkt
      */
-    public Product(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize)
+    public Product(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize, int pAmount)
     {
         id = pId;
         type = pType;
@@ -29,6 +29,7 @@ public class Product
         price= pPrice;
         color = pColor;
         size = pSize;
+        amount = pAmount;
     }
 
     public String getType(){
