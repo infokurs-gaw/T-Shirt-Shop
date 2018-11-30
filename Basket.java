@@ -4,11 +4,8 @@ public class Basket
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
 
     ArrayList<Product> products = new ArrayList<>();
-
-    double totalPrice = 0;// Gesamtpreis 
-    double amount; // Anzahl der Waren
     Account owner;
-    
+
     //public String bestaetigen;
     /**
      * Konstruktor für Objekte der Klasse Basket
@@ -18,28 +15,55 @@ public class Basket
         this.owner = owner;
     }
 
+    public int getAmount() {
+        int totalAmount = 0;
+        for(Product p: products) {
+            totalAmount += p.getAmount();
+        }
+        return totalAmount;
+    }
+    
+    
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for(Product p: products) {
+            totalPrice += (p.getPrice() * p.getAmount());
+        }
+        return totalPrice;
+    }
+    
+    
     /**
      * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
      * 
      * @param  y    ein Beispielparameter für eine Methode
      * @return        die Summe aus x und y
      */
-    public void addProduct(Product product,int anzahl )
+    public void addProduct(Product product)
     {
-        for(int i = 0; i < anzahl; i++){
-            products.add(product);
-            double p = 0;
-            p = product.getPrice();
-            totalPrice= p + totalPrice;
-            amount++;
-        }
+        products.add(product);
     }
 
     public void AttentionDeleteBasket()
     {
-        totalPrice = 0;
-        amount = 0;
         products.clear();    
+    }
+
+    public ArrayList<Product> getBasket() {
+        return products;
+    }
+
+    public ArrayList<String> getBasketAsStringlist() {
+        ArrayList<String> al = new ArrayList<String>();
+
+        for(int i = 0; i<products.size(); i++) {
+            String pString = "";
+            pString += "PRODUCT:";
+            pString += products.get(i).getType() + ":";
+            pString += products.get(i).getType() + ":";
+        }
+
+        return al;
     }
 
     public void displayBasket()
@@ -64,66 +88,35 @@ public class Basket
                 System.out.println("-------");
             }
 
-            System.out.println("Der Gesamtpreis beträgt: "+ totalPrice);
+            System.out.println("Der Gesamtpreis beträgt: "+ this.getTotalPrice());
 
-            System.out.println("für "+amount+" Artikel");
+            System.out.println("für "+getAmount()+" Artikel");
             System.out.println("--------END-------");
         }
 
     }
 
-    
+    // public void deleteDasProduct(Product product)
+    //{
+    // products.remove(product);
+    // }
 
     public void deleteProduct(int id)
     {
-        //for(Product p: products) {
-
-        //p.
-        //}
-
-        for(int p = 0;p<amount ;p++)
-        {
-            if(id==products.get(p).getId())
-            {
-                System.out.println("Sie loeschen:");
-                System.out.println("Artikelart: " +products.get(p).getType());
-                System.out.println("Artikelname: "+products.get(p).getName());
-                System.out.println("Produktfarbe: "+products.get(p).getColor());
-                System.out.println("Größe: " +products.get(p).getSize());
-                System.out.println("Produktbeschreibung: "+products.get(p).getDescription());
-                System.out.println("Das Produkt kostet: "+products.get(p).getPrice());
-                
-
-                
-                
-                
-                    double o = 0;
-                    o = products.get(p).getPrice();
-                    totalPrice -= o; //Math.abs(o - totalPrice);
-                    amount--;
-                    products.remove(p);
-                    p--;  
-                    
-                
-
+        for(Product p: products) {
+            if(p.getId() == id) {
+                products.remove(p);
             }
-        } 
+        }
     }
 
-    public double getTotalPrice()
-    {
-        return totalPrice;
-    }
-
-    public double getProductCount(){
-        return amount;
-    }
 
     public void purchase(Order x)
     {
         Product[] pArray = new Product[products.size()];
         pArray = products.toArray(pArray);
-       x.setProducts(pArray);
+        x.setProducts(pArray);
+
     }
 
     public Account getOwner ()
@@ -131,6 +124,4 @@ public class Basket
         return owner;
     }
 
-   
 }
-
