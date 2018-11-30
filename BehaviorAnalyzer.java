@@ -131,11 +131,9 @@ public class BehaviorAnalyzer
         int a = 0;
         int b = 0;
         int c = 0;
-        System.out.println(account.getId());
 
         while(SoldProducts[4]== null && a< db.getOrders().length){
             if(orders[a].getAccount().getId() == account.getId()) {
-                System.out.println(orders[a].getAccount().getId());
                 if(orders[a].getProducts().length>1) {
                     while(orders[a].getProducts().length>b && b< 4){
                         SoldProducts[c] = orders[a].getProducts()[b];
