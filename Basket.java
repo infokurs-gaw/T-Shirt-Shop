@@ -8,7 +8,7 @@ public class Basket
 
     //public String bestaetigen;
     /**
-     * Konstruktor für Objekte der Klasse Basket
+     * Konstruktor fuer Objekte der Klasse Basket
      */
     public Basket(Account owner)
     {
@@ -36,7 +36,7 @@ public class Basket
     /**
      * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
      * 
-     * @param  y    ein Beispielparameter für eine Methode
+     * @param  y    ein Beispielparameter fuer eine Methode
      * @return        die Summe aus x und y
      */
     public void addProduct(Product product)
@@ -81,16 +81,16 @@ public class Basket
                 System.out.println("Artikelart: " +products.get(i).getType());
                 System.out.println("Artikelname: "+products.get(i).getName());
                 System.out.println("Produktfarbe: "+products.get(i).getColor());
-                System.out.println("Größe: " +products.get(i).getSize());
+                System.out.println("Grï¿½ï¿½e: " +products.get(i).getSize());
                 System.out.println("Produktbeschreibung: "+products.get(i).getDescription());
                 System.out.println("Das Produkt kostet: "+products.get(i).getPrice());
 
                 System.out.println("-------");
             }
 
-            System.out.println("Der Gesamtpreis beträgt: "+ this.getTotalPrice());
+            System.out.println("Der Gesamtpreis betrï¿½gt: "+ this.getTotalPrice());
 
-            System.out.println("für "+getAmount()+" Artikel");
+            System.out.println("fï¿½r "+getAmount()+" Artikel");
             System.out.println("--------END-------");
         }
 
