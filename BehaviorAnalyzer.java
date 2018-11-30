@@ -177,7 +177,7 @@ public class BehaviorAnalyzer
         Date[] loginDates =  db.getLoginDates(account);
         Date[] logoutDates =  db.getLogoutDates(account);
         long time= 0;
-        for(int i=0; i<loginDates.length; i++){
+        for(int i=0; i<logoutDates.length; i++){
             long a = loginDates[i].getTime();
             long b = logoutDates[i].getTime();
             time = time + (b-a); 
