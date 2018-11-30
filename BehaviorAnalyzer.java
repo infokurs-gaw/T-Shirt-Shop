@@ -35,7 +35,7 @@ public class BehaviorAnalyzer
 
     public String[] getTop10Products () {        
         //Die benï¿½tigten Arrays der Datenbank werden gespeichert
-        // in order2 wird das Array gespeichert was noch nicht die volle Länge hat
+        // in order2 wird das Array gespeichert was noch nicht die volle Lï¿½nge hat
         Order[] orders = db.getOrders();
         String[] Typ = new String[db.getProducts().length]; 
         for(int a = 0 ;db.getProducts().length> a; a++) {
@@ -43,7 +43,7 @@ public class BehaviorAnalyzer
         }
         // Nur zaehlvariable
 
-        // Eine Variable die die Länge des Arrays bestimmt
+        // Eine Variable die die Lï¿½nge des Arrays bestimmt
         int lengthArray = 0;
         for(int b = 0; orders.length > b ; b++) {
             for(int i = 0; orders[b].getProducts().length> i; i++){
@@ -75,8 +75,6 @@ public class BehaviorAnalyzer
         for(int a = 0 ;ordersType.length>a; a++){
             String typtmp = ordersType[a];
             int b = 0;
-            System.out.println(typtmp);
-            System.out.println(Typ[b]);
             if(typtmp.equals(Typ[b])){
                 Counter[b] ++;
             }else {
@@ -113,7 +111,7 @@ public class BehaviorAnalyzer
         for(int c = 0; c<Typtmp.length; c++){            
             Typarray[c] = Typtmp[d-c-1];
         }
-        // Das sortierte Array muss nur noch auf die lange von 10 gekürzt werden
+        // Das sortierte Array muss nur noch auf die lange von 10 gekï¿½rzt werden
         String[] returnArray = new String [10];
         if(Typarray.length > 10) {
             for(int x = 0; x< 9;x++) {
