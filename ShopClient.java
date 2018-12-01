@@ -34,5 +34,6 @@ public class ShopClient extends Client {
 
     public Product getProductInfoById(int id){
         send("GET_PRODUCT_INFO_BY_ID:" + id);
+        return null;
     }
 }
