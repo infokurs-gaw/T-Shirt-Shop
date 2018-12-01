@@ -2,3 +2,4 @@
 *.ctxt
 package.bluej
 *.db
+.vscode/
