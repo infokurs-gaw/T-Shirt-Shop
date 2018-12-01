@@ -1,10 +1,15 @@
+import java.util.HashMap;
+
 public class ShopClient extends Client {
+
+    private String lastMessage;
 
     public ShopClient(String pServerIP, int pServerPort) {
         super(pServerIP, pServerPort);
     }
 
     public void processMessage(String pMessage) {
+        lastMessage = pMessage;
         System.out.println(pMessage);
     }
 
@@ -32,8 +37,19 @@ public class ShopClient extends Client {
         send("CLOSE_CONNECTION");
     }
 
-    public Product getProductInfoById(int id){
+    public Product getProductInfoById(int id) {
         send("GET_PRODUCT_INFO_BY_ID:" + id);
-        return null;
+
+        ProtocolDefinition def = new ProtocolDefinition("PRODUCT_INFO:<id>:<type>:<name>:<desc>:<price>:<color>:<size>",
+                null);
+
+        while (!def.matchesDefinition(lastMessage)) {
+            //System.out.println("WAITING...");
+        }
+
+        HashMap<String, String> map = def.extractInformation(lastMessage);
+
+        return new Product(Integer.parseInt(map.get("id")), map.get("type"), map.get("name"), map.get("desc"),
+                Double.parseDouble(map.get("price")), map.get("color"), map.get("size"));
     }
 }
