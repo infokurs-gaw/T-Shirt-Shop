@@ -20,6 +20,17 @@ public class Product
     /**
      * Konstruktor für Objekte der Klasse Produkt
      */
+    public Product(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize, int pAmount)
+    {
+        id = pId;
+        type = pType;
+        name = pName;
+        description = pDescription;
+        price= pPrice;
+        color = pColor;
+        size = pSize;
+        amount = pAmount;
+    }
     public Product(int pId,String pType,String pName,String pDescription,double pPrice,String pColor,String pSize)
     {
         id = pId;
@@ -29,6 +40,7 @@ public class Product
         price= pPrice;
         color = pColor;
         size = pSize;
+        amount = 1;
     }
 
     public String getType(){
