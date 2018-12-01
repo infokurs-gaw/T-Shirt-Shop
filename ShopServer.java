@@ -38,6 +38,8 @@ public class ShopServer extends Server {
                     this.logOff(ip, port);
                 }), new ProtocolDefinition("CLOSE_CONNECTION", (HashMap<String, String> fields, String ip, int port) -> {
                     closeConnection(ip, port);
+                }), new ProtocolDefinition("GET_PRODUCT_INFO_BY_ID:<id>", (HashMap<String, String> fields, String ip, int port) -> {
+                    this.sendProductInfoById(ip, port, Integer.parseInt(fields.get("id")));
                 }) };
     }
 

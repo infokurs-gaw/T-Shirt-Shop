@@ -31,4 +31,8 @@ public class ShopClient extends Client {
     public void closeConnection() {
         send("CLOSE_CONNECTION");
     }
+
+    public Product getProductInfoById(int id){
+        send("GET_PRODUCT_INFO_BY_ID:" + id);
+    }
 }
